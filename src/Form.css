@@ -1,0 +1,11 @@
+.form {
+    display: flex;
+    align-items: center; /* 縦方向中央揃え */
+    justify-content: center; /* 横方向中央揃え */
+    padding: 10px;
+}
+
+.formText {
+    display: flex;
+    flex-wrap: wrap;
+}
