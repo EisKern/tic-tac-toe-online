@@ -74,7 +74,3 @@ class Board extends React.Component {
 }
 
 export default Board;
-
-/*
-your color and turn => express not char but button color
-*/
