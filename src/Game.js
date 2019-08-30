@@ -241,6 +241,7 @@ class Game extends React.Component {
                         inGame={turn >= 0 ? true : false}
                         onChange={(text) => this.handleChangeRoom(text)}
                         onClick={()=>this.handlePlayButton()}
+                        login={this.props.login}
                     />
                     <Info
                         roomId={this.state.roomId}

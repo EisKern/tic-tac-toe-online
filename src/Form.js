@@ -33,7 +33,10 @@ export default class Form extends React.Component {
     render() {
         return (
             <div className="form">
-                <FormControl className="formText">
+                <FormControl
+                    className="formText"
+                    disabled={!this.props.login}
+                >
                     <InputLabel htmlFor="component-simple">Room ID</InputLabel>
                     <Input id="component-simple" value={this.state.name} type="number" onChange={this.handleTextChange} />
                     <FormHelperText id="component-helper-text">4 digits</FormHelperText>
