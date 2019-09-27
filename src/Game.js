@@ -29,6 +29,7 @@ class Game extends React.Component {
         };
     }
 
+    // initialize game info
     initGame = () => {
         this.setState({
             roomId: "",
@@ -52,6 +53,7 @@ class Game extends React.Component {
         console.log("click button");
     }
 
+    // upload result of clicking buttons to database
     updateDatabase = async (clickedNum) => {
         const copyBoard = this.state.sync.board.slice();
         const date = moment(new Date()).format("YYYY/MM/DD HH:mm:ss");
@@ -70,12 +72,14 @@ class Game extends React.Component {
         });
     }
 
+    // set room id
     handleChangeRoom = (text) => {
         this.setState({
             roomId: text
         });
     }
 
+    // create or enter room by clicking play button
     handlePlayButton = async () => {
         const gameRef = firebaseDb.ref("/games/" + this.state.roomId);
         const snapshot = await gameRef.once("value");
@@ -149,7 +153,6 @@ class Game extends React.Component {
             judgement: -1,
             timestamp: date
         });
-        console.log("reset room");
     }
 
     syncWithDatabase = async (gameRef) => {
@@ -208,7 +211,6 @@ class Game extends React.Component {
             roomId: roomId,
             id: 0
         });
-        console.log(this.state);
 
         this.resetRoom(gameRef);
         this.syncWithDatabase(gameRef);
@@ -225,6 +227,30 @@ class Game extends React.Component {
         });
         console.log("end game");
     }
+
+    componentDidMount = () => {
+        window.addEventListener("beforeunload", this.ForceTermination);
+    }
+
+    componentWillUnmount = () => {
+        window.removeEventListener('beforeunload', this.ForceTermination);
+    }
+
+    ForceTermination = async () => {
+        const gameRef = firebaseDb.ref("/games/" + this.state.roomId);
+        const snapshot = await gameRef.once("value");
+        const progress = snapshot.val();
+
+        if(progress == null) {
+            return;
+        }
+
+        await gameRef.update({
+            turn: -2,
+            judgement: (this.state.id + 1) % 2,
+            timestamp: moment(new Date()).format("YYYY/MM/DD HH:mm:ss")
+        });
+    };
 
     render() {
         const turn = this.state.sync.turn;
